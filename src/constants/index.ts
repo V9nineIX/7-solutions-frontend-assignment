@@ -1,51 +1,58 @@
-const TODO_LIST = [
+const FRUIT_TYPE = "Fruit" as const;
+const VEGETABLE_TYPE = "Vegetable" as const;
+
+type TodoType = typeof FRUIT_TYPE | typeof VEGETABLE_TYPE;
+
+interface TodoItem {
+  type: TodoType;
+  name: string;
+}
+
+const TODO_LIST: TodoItem[] = [
   {
-    type: "Fruit",
+    type: FRUIT_TYPE,
     name: "Apple",
   },
   {
-    type: "Vegetable",
+    type: VEGETABLE_TYPE,
     name: "Broccoli",
   },
   {
-    type: "Vegetable",
+    type: VEGETABLE_TYPE,
     name: "Mushroom",
   },
   {
-    type: "Fruit",
+    type: FRUIT_TYPE,
     name: "Banana",
   },
   {
-    type: "Vegetable",
+    type: VEGETABLE_TYPE,
     name: "Tomato",
   },
   {
-    type: "Fruit",
+    type: FRUIT_TYPE,
     name: "Orange",
   },
   {
-    type: "Fruit",
+    type: FRUIT_TYPE,
     name: "Mango",
   },
   {
-    type: "Fruit",
+    type: FRUIT_TYPE,
     name: "Pineapple",
   },
   {
-    type: "Vegetable",
+    type: VEGETABLE_TYPE,
     name: "Cucumber",
   },
   {
-    type: "Fruit",
+    type: FRUIT_TYPE,
     name: "Watermelon",
   },
   {
-    type: "Vegetable",
+    type: VEGETABLE_TYPE,
     name: "Carrot",
   },
 ];
 
-const FRUIT_TYPE = "Fruit";
-const VEGETABLE_TYPE = "Vegetable";
-
-export { TODO_LIST, FRUIT_TYPE, VEGETABLE_TYPE };
+export { TODO_LIST, FRUIT_TYPE, VEGETABLE_TYPE, type TodoItem, type TodoType };

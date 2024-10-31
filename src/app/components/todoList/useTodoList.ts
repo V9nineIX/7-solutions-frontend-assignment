@@ -1,26 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { TODO_LIST } from "@/constants";
+import {
+  TODO_LIST,
+  FRUIT_TYPE,
+  VEGETABLE_TYPE,
+  type TodoItem,
+} from "@/constants";
 
-const FRUIT_TYPE = "Fruit";
-const VEGETABLE_TYPE = "Vegetable";
+interface ListState {
+  mainList: TodoItem[];
+  fruitList: TodoItem[];
+  vegetableList: TodoItem[];
+}
 
 const useTodoList = () => {
-  const [listState, setListState] = useState<any>({
+  const [listState, setListState] = useState<ListState>({
     mainList: TODO_LIST,
     fruitList: [],
     vegetableList: [],
   });
 
-  const updateList = (item: any) => {
-    setListState(item);
-  };
-
-  const moveItemToType = (selectItem: any) => {
-    setListState((prev: any) => {
-      const newMainList = prev?.mainList.filter(
-        (i: any) => i.name != selectItem.name
+  const moveItemToType = (selectItem: TodoItem) => {
+    setListState((prev: ListState) => {
+      const newMainList = prev.mainList.filter(
+        (i: TodoItem) => i.name != selectItem.name
       ); //  remove selected item from mainlist
       const newState = {
         ...prev,
@@ -28,11 +32,11 @@ const useTodoList = () => {
         fruitList:
           selectItem.type === FRUIT_TYPE
             ? [...prev.fruitList, selectItem]
-            : prev?.fruitList,
+            : prev.fruitList,
         vegetableList:
           selectItem.type === VEGETABLE_TYPE
-            ? [...prev?.vegetableList, selectItem]
-            : prev?.vegetableList,
+            ? [...prev.vegetableList, selectItem]
+            : prev.vegetableList,
       };
 
       return newState;
@@ -44,17 +48,17 @@ const useTodoList = () => {
     }, 5000);
   };
 
-  const autoMoveItemBack = (selectItem: any) => {
-    setListState((prev: any) => {
+  const autoMoveItemBack = (selectItem: TodoItem) => {
+    setListState((prev: ListState) => {
       const itemToMoveBack =
-        prev.fruitList.find((i: any) => i.name === selectItem.name) ||
-        prev.vegetableList.find((i: any) => i.name === selectItem.name);
+        prev.fruitList.find((i) => i.name === selectItem.name) ||
+        prev.vegetableList.find((i) => i.name === selectItem.name);
       if (itemToMoveBack) {
         const newFruitList = prev.fruitList.filter(
-          (i: any) => i.name !== selectItem.name
+          (i) => i.name !== selectItem.name
         );
         const newVegetableList = prev.vegetableList.filter(
-          (i: any) => i.name !== selectItem.name
+          (i) => i.name !== selectItem.name
         );
         const newMainList = [...prev.mainList, itemToMoveBack];
         return {
@@ -68,11 +72,14 @@ const useTodoList = () => {
     });
   };
 
-  const moveItemBack = (selectItem: any, type: any) => {
+  const moveItemBack = (
+    selectItem: TodoItem,
+    type: typeof FRUIT_TYPE | typeof VEGETABLE_TYPE
+  ) => {
     if (!type) return;
 
-    setListState((prev: any) => {
-      let itemToMoveBack = [];
+    setListState((prev: ListState) => {
+      let itemToMoveBack: TodoItem | null = null;
       //clone to make default
       let newFruitList = [...prev.fruitList];
       let newVegetableList = [...prev.vegetableList];
@@ -102,10 +109,10 @@ const useTodoList = () => {
     });
   };
 
-  const filterItemToMove = (list: any, selectItem: any) => {
-    const index = list.findIndex((i: any) => i.name === selectItem.name);
-    let itemToMoveBack = null;
-    let newList = [];
+  const filterItemToMove = (list: TodoItem[], selectItem: TodoItem) => {
+    const index = list.findIndex((i) => i.name === selectItem.name);
+    let itemToMoveBack: TodoItem | null = null;
+    let newList: TodoItem[] = [];
     if (index !== -1) {
       itemToMoveBack = list[index];
       newList = list.slice(0, index).concat(list.slice(index + 1));
@@ -118,7 +125,6 @@ const useTodoList = () => {
 
   return {
     listState,
-    updateList,
     moveItemToType,
     moveItemBack,
   };
