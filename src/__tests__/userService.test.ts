@@ -1,4 +1,4 @@
-import { fetchUsers, groupUsersByDepartment } from "@/app/service/userService";
+import { fetchUsers, groupUsersByDepartment } from "../app/service/userService";
 import axios from "axios";
 
 jest.mock("axios");
@@ -14,6 +14,10 @@ describe("userService", () => {
           lastName: "Doe",
           email: "john@example.com",
           department: "Engineering",
+          gender: "male",
+          age: 25,
+          hair: { color: "Black" },
+          address: { postalCode: "12345" },
           company: {
             name: "Tech Corp",
             title: "Software Engineer",
@@ -29,15 +33,19 @@ describe("userService", () => {
   });
 
   describe("groupUsersByDepartment", () => {
-    it("should transform users data grouped by department", () => {
+    it("should transform users data grouped by department with statistics", () => {
       const mockUsers = [
         {
           id: 1,
-          firstName: "John",
-          lastName: "Doe",
-          email: "john@example.com",
-          department: "Engineering",
+          firstName: "Terry",
+          lastName: "Medhurst",
+          email: "terry@example.com",
+          gender: "male",
+          age: 25,
+          hair: { color: "Black" },
+          address: { postalCode: "12345" },
           company: {
+            department: "Engineering",
             name: "Tech Corp",
             title: "Software Engineer",
           },
@@ -47,8 +55,12 @@ describe("userService", () => {
           firstName: "Jane",
           lastName: "Smith",
           email: "jane@example.com",
-          department: "Engineering",
+          gender: "female",
+          age: 30,
+          hair: { color: "Blond" },
+          address: { postalCode: "67890" },
           company: {
+            department: "Engineering",
             name: "Tech Corp",
             title: "Senior Engineer",
           },
@@ -58,8 +70,12 @@ describe("userService", () => {
           firstName: "Bob",
           lastName: "Johnson",
           email: "bob@example.com",
-          department: "Marketing",
+          gender: "male",
+          age: 35,
+          hair: { color: "Brown" },
+          address: { postalCode: "11111" },
           company: {
+            department: "Marketing",
             name: "Tech Corp",
             title: "Marketing Manager",
           },
@@ -68,47 +84,28 @@ describe("userService", () => {
 
       const expected = {
         Engineering: {
-          count: 2,
-          users: [
-            {
-              id: 1,
-              firstName: "John",
-              lastName: "Doe",
-              email: "john@example.com",
-              department: "Engineering",
-              company: {
-                name: "Tech Corp",
-                title: "Software Engineer",
-              },
-            },
-            {
-              id: 2,
-              firstName: "Jane",
-              lastName: "Smith",
-              email: "jane@example.com",
-              department: "Engineering",
-              company: {
-                name: "Tech Corp",
-                title: "Senior Engineer",
-              },
-            },
-          ],
+          male: 1,
+          female: 1,
+          ageRange: "25-30",
+          hair: {
+            Black: 1,
+            Blond: 1,
+          },
+          addressUser: {
+            TerryMedhurst: "12345",
+            JaneSmith: "67890",
+          },
         },
         Marketing: {
-          count: 1,
-          users: [
-            {
-              id: 3,
-              firstName: "Bob",
-              lastName: "Johnson",
-              email: "bob@example.com",
-              department: "Marketing",
-              company: {
-                name: "Tech Corp",
-                title: "Marketing Manager",
-              },
-            },
-          ],
+          male: 1,
+          female: 0,
+          ageRange: "35-35",
+          hair: {
+            Brown: 1,
+          },
+          addressUser: {
+            BobJohnson: "11111",
+          },
         },
       };
 
@@ -116,9 +113,41 @@ describe("userService", () => {
       expect(result).toEqual(expected);
     });
 
-    it("should handle empty users array", () => {
-      const result = groupUsersByDepartment([]);
-      expect(result).toEqual({});
+    it("should handle single user in department", () => {
+      const mockUsers = [
+        {
+          id: 1,
+          firstName: "Terry",
+          lastName: "Medhurst",
+          email: "terry@example.com",
+          gender: "male",
+          age: 25,
+          hair: { color: "Black" },
+          address: { postalCode: "12345" },
+          company: {
+            department: "Engineering",
+            name: "Tech Corp",
+            title: "Software Engineer",
+          },
+        },
+      ];
+
+      const expected = {
+        Engineering: {
+          male: 1,
+          female: 0,
+          ageRange: "25-25",
+          hair: {
+            Black: 1,
+          },
+          addressUser: {
+            TerryMedhurst: "12345",
+          },
+        },
+      };
+
+      const result = groupUsersByDepartment(mockUsers);
+      expect(result).toEqual(expected);
     });
   });
 });
