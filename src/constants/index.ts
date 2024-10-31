@@ -45,4 +45,7 @@ const TODO_LIST = [
   },
 ];
 
-export { TODO_LIST };
+const FRUIT_TYPE = "Fruit";
+const VEGETABLE_TYPE = "Vegetable";
+
+export { TODO_LIST, FRUIT_TYPE, VEGETABLE_TYPE };
