@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import TodoList from '../index';
+import TodoList from '../app/components/todoList/index';
 import { TODO_LIST } from '@/constants';
 
 jest.useFakeTimers();
