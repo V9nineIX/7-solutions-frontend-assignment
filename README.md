@@ -2,11 +2,15 @@
 
 ## 1. Auto Delete Todo List
 
+link : https://main.d3mh3kncssppg2.amplifyapp.com/
+
 ```
    src/app/page.tsx
 ```
 
 ## 2. Create data from API _(OPTIONAL)_
+
+link : https://main.d3mh3kncssppg2.amplifyapp.com/department
 
 ```
  src/app/department/page.tsx

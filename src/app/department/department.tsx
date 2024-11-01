@@ -24,7 +24,7 @@ export default function UserProfile({ initialData }: UserProfileProps) {
 
 
   return (
-    <div className='space-y-6 p-4'>
+    <div className='space-y-6 p-4 container mx-auto'>
       {Object.entries(departmentStats).map(([department, stats]) => (
         <div key={department} className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-bold mb-4">{department}</h2>
