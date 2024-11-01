@@ -92,8 +92,8 @@ describe("userService", () => {
             Blond: 1,
           },
           addressUser: {
-            TerryMedhurst: "12345",
-            JaneSmith: "67890",
+            "Terry Medhurst": "12345",
+            "Jane Smith": "67890",
           },
         },
         Marketing: {
@@ -104,7 +104,7 @@ describe("userService", () => {
             Brown: 1,
           },
           addressUser: {
-            BobJohnson: "11111",
+            "Bob Johnson": "11111",
           },
         },
       };
@@ -141,7 +141,7 @@ describe("userService", () => {
             Black: 1,
           },
           addressUser: {
-            TerryMedhurst: "12345",
+            "Terry Medhurst": "12345",
           },
         },
       };
