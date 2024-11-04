@@ -7,7 +7,7 @@ import { FRUIT_TYPE, VEGETABLE_TYPE } from "@/constants"
 
 export default function TodoList() {
 
-  const { listState, moveItemToType, moveItemBack } = useTodoList()
+  const { listState, moveItemToType, moveItemBack, countdowns } = useTodoList()
   const { mainList, fruitList, vegetableList } = listState as any
 
   return (
@@ -34,7 +34,15 @@ export default function TodoList() {
           {fruitList.map((item: any, index: any) => {
             return (
               <li key={`fruit-list-${index}`}>
-                <button onClick={() => { moveItemBack(item, FRUIT_TYPE) }} className="bg-white w-full p-2 ring-1  ring-gray-300 ">{item.name}</button>
+                <button onClick={() => { moveItemBack(item, FRUIT_TYPE) }} className="bg-white w-full p-2 ring-1  ring-gray-300 ">
+                  <div className="flex flex-row justify-center gap-2">
+                    <label>{item.name}</label>
+                    <label className="text-red-500">(
+                      {countdowns[item.name] ? countdowns[item.name] : 0}
+                      )
+                    </label>
+                  </div>
+                </button>
               </li>
             )
           })}
@@ -48,8 +56,17 @@ export default function TodoList() {
         <ul className="space-y-3 p-3">
           {vegetableList.map((item: any, index: any) => {
             return (
-              <li key={`vagetable-list-${index}`}>
-                <button onClick={() => { moveItemBack(item, VEGETABLE_TYPE) }} className="bg-white w-full p-2 ring-1  ring-gray-300">{item.name}</button>
+              <li key={`vegetable-list-${index}`}>
+                <button onClick={() => { moveItemBack(item, VEGETABLE_TYPE) }} className="bg-white w-full p-2 ring-1  ring-gray-300">
+                  <div className="flex flex-row justify-center gap-2">
+                    <label>{item.name}</label>
+                    <label className="text-red-500">(
+                      {countdowns[item.name] ? countdowns[item.name] : 0}
+                      )
+                    </label>
+                  </div>
+                </button>
+
               </li>
             )
           })}

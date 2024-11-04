@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   TODO_LIST,
   FRUIT_TYPE,
@@ -20,6 +20,8 @@ const useTodoList = () => {
     fruitList: [],
     vegetableList: [],
   });
+
+  const [countdowns, setCountdowns] = useState<{ [key: string]: number }>({});
 
   const moveItemToType = (selectItem: TodoItem) => {
     setListState((prev: ListState) => {
@@ -42,11 +44,39 @@ const useTodoList = () => {
       return newState;
     });
 
+    // Start countdown for the moved item
+    setCountdowns((prev) => ({
+      ...prev,
+      [selectItem.name]: 5, // Set countdown to 5 seconds
+    }));
+
     // Set timer 5 sec to move back
     setTimeout(() => {
       autoMoveItemBack(selectItem);
+      setCountdowns((prev) => {
+        const newCountdowns = { ...prev };
+        delete newCountdowns[selectItem.name]; // Remove countdown after moving back
+        return newCountdowns;
+      });
     }, 5000);
   };
+
+  // New effect to handle countdown updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdowns((prev) => {
+        const newCountdowns = { ...prev };
+        for (const key in newCountdowns) {
+          if (newCountdowns[key] > 0) {
+            newCountdowns[key] -= 1; // Decrease countdown
+          }
+        }
+        return newCountdowns;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, []);
 
   const autoMoveItemBack = (selectItem: TodoItem) => {
     setListState((prev: ListState) => {
@@ -127,6 +157,7 @@ const useTodoList = () => {
     listState,
     moveItemToType,
     moveItemBack,
+    countdowns,
   };
 };
 
